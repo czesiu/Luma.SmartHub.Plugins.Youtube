@@ -1,8 +1,13 @@
 $Location = Get-Location
 $Configuration = "Release"
+$SolutionFile = "src\Luma.SmartHub.Plugins.Youtube.sln"
+$NugetSources = "https://www.nuget.org/api/v2;https://ci.appveyor.com/nuget/luma-smarthub"
+
+# Restore NuGet packages
+NuGet Restore $SolutionFile -Source $NugetSources
 
 # Run the build
-& "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" src\Luma.SmartHub.Plugins.Youtube.sln /property:Configuration=$Configuration
+& "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" $SolutionFile /property:Configuration=$Configuration
 
 # Search for all nuspec files
 Get-ChildItem -r *.nuspec | ForEach-Object {
