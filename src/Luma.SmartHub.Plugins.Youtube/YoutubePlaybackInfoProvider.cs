@@ -5,13 +5,13 @@ using Luma.SmartHub.Plugins.Youtube.YoutubeExtractor;
 
 namespace Luma.SmartHub.Plugins.Youtube
 {
-    public class YoutubePlaybackUriTransformer : IPlaybackUriTransformer
+    public class YoutubePlaybackInfoProvider : IPlaybackInfoProvider
     {
         private readonly DownloadUrlResolver _downloadUrlResolver;
 
-        public YoutubePlaybackUriTransformer()
+        public YoutubePlaybackInfoProvider()
             : this(new DownloadUrlResolver()) { }
-        public YoutubePlaybackUriTransformer(DownloadUrlResolver downloadUrlResolver)
+        public YoutubePlaybackInfoProvider(DownloadUrlResolver downloadUrlResolver)
         {
             _downloadUrlResolver = downloadUrlResolver;
         }
@@ -23,7 +23,7 @@ namespace Luma.SmartHub.Plugins.Youtube
             return youtubeHosts.Contains(uri.Host);
         }
 
-        public Uri Transform(Uri uri)
+        public PlaybackInfo Get(Uri uri)
         {
             if (!IsYoutubeUrl(uri))
                 return null;
@@ -38,8 +38,11 @@ namespace Luma.SmartHub.Plugins.Youtube
             if (result == null)
                 throw new VideoNotAvailableException($"Audio stream for url {uri} was not found");
 
-            // TODO: Return Title too
-            return new Uri(result.DownloadUrl);
+            return new PlaybackInfo
+            {
+                Name = result.Title,
+                Uri = new Uri(result.DownloadUrl)
+            };
         }
     }
 }
