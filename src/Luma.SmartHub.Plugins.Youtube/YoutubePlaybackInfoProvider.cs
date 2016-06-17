@@ -14,6 +14,8 @@ namespace Luma.SmartHub.Plugins.Youtube
         public YoutubePlaybackInfoProvider(DownloadUrlResolver downloadUrlResolver)
         {
             _downloadUrlResolver = downloadUrlResolver;
+
+            SelectVideoInfoPredicate = c => c.AudioType == AudioType.Aac && c.Resolution == 0;
         }
 
         public bool IsYoutubeUrl(Uri uri)
@@ -22,6 +24,8 @@ namespace Luma.SmartHub.Plugins.Youtube
 
             return youtubeHosts.Contains(uri.Host);
         }
+
+        public Func<VideoInfo, bool> SelectVideoInfoPredicate { get; set; }  
 
         public PlaybackInfo Get(Uri uri)
         {
@@ -33,7 +37,7 @@ namespace Luma.SmartHub.Plugins.Youtube
 
             var result = downloadUrls
                 .OrderByDescending(c => c.AudioBitrate)
-                .FirstOrDefault(c => c.AudioType == AudioType.Aac && c.Resolution == 0);
+                .FirstOrDefault(SelectVideoInfoPredicate);
 
             if (result == null)
                 throw new VideoNotAvailableException($"Audio stream for url {uri} was not found");

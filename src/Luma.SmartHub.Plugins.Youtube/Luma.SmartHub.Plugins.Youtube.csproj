@@ -50,12 +50,12 @@
     <Compile Include="YoutubePlaybackInfoProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Luma.SmartHub, Version=0.0.38.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Luma.SmartHub.0.0.38\lib\portable45-net45+win8\Luma.SmartHub.dll</HintPath>
+    <Reference Include="Luma.SmartHub, Version=0.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Luma.SmartHub.0.0.39\lib\portable45-net45+win8\Luma.SmartHub.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Luma.SmartHub.Audio, Version=0.0.38.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Luma.SmartHub.Audio.0.0.38\lib\portable45-net45+win8\Luma.SmartHub.Audio.dll</HintPath>
+    <Reference Include="Luma.SmartHub.Audio, Version=0.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Luma.SmartHub.Audio.0.0.39\lib\portable45-net45+win8\Luma.SmartHub.Audio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
