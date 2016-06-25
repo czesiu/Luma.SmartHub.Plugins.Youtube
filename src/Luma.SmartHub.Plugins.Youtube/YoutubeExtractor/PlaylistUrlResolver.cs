@@ -11,7 +11,7 @@ namespace Luma.SmartHub.Plugins.Youtube.YoutubeExtractor
 
         //private const string PlaylistEntryPattern = "<a class=\"pl-video-title-link yt-uix-tile-link yt-uix-sessionlink  spf-link \" dir=\"ltr\" href=\"(.*)\" data-sessionlink";
 
-        private const string PlaylistEntryPattern = " data-video-id=\"(.{11})\" ";
+        private const string PlaylistEntryPattern = " data-video-id=\"(.{11})\"";
 
         public PlaylistUrlResolver()
             : this(new WebClient()) { }

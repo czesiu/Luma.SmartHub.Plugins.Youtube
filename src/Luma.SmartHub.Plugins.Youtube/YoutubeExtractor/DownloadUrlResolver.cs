@@ -15,7 +15,6 @@ namespace Luma.SmartHub.Plugins.Youtube.YoutubeExtractor
         private readonly IWebClient _webClient;
 
         private const string RateBypassFlag = "ratebypass";
-        private const int CorrectSignatureLength = 81;
         private const string SignatureQuery = "signature";
 
         public DownloadUrlResolver()
@@ -231,11 +230,6 @@ namespace Luma.SmartHub.Plugins.Youtube.YoutubeExtractor
 
         private string GetDecipheredSignature(string htmlPlayerVersion, string signature)
         {
-            if (signature.Length == CorrectSignatureLength)
-            {
-                return signature;
-            }
-
             return Decipherer.DecipherWithVersion(signature, htmlPlayerVersion);
         }
 

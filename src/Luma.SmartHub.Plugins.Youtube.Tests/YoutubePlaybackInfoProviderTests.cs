@@ -12,9 +12,9 @@ namespace Luma.SmartHub.Plugins.Youtube.Tests
         [Fact]
         public void Should_Return_Proper_Audio_Uri_And_Name()
         {
-            var exampleVideoUrl = "http://youtube.com/watch?v=BVfZ6GSee3E";
-            var expectedAudioUri = "https://r4---sn-2pvopxg-2v1l.googlevideo.com/videoplayback?sparams=clen,dur,gir,id,initcwndbps,ip,ipbits,itag,keepalive,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,upn,expire&clen=4994824&initcwndbps=1497500&ipbits=0&dur=314.444&source=youtube&lmt=1464406177685666&requiressl=yes&fexp=9416126,9416891,9422596,9424092,9428398,9431012,9432060,9432565,9432683,9433096,9433223,9433946,9434605,9435527,9435876,9436026,9436097,9436606,9436879,9436923,9437066,9437285,9437403,9437553,9437602,9437987,9438011,9438245,9438661,9438957&signature=C2D0E49E60B41A745394189ED86F5756EAD6CF78.74FFD8969724CC4152405495553710C2C9E248FC&key=yt6&gir=yes&itag=140&expire=1465669346&upn=_xgEzsohfto&sver=3&mime=audio/mp4&mv=m&mt=1465647402&ms=au&ip=213.192.79.68&pl=24&keepalive=yes&mn=sn-2pvopxg-2v1l&mm=31&id=o-AEbXN7xC4f1q7lKEjFm5jNaMQIOiJEzjAxvjDdEJmBmf&ratebypass=yes";
-            var expectedTitle = "Zootopia - Funny moments [HD]";
+            var exampleVideoUrl = "http://youtube.com/watch?v=maw2OoL15J4";
+            var expectedAudioUri = "https://r3---sn-f5f7ln7y.googlevideo.com/videoplayback?nh=IgpwcjAyLndhdzAyKg4yMTMuNDYuMTc4LjEwOQ&clen=796953&gir=yes&sver=3&lmt=1463113091862123&dur=50.131&source=youtube&fexp=9416126,9416891,9419452,9422596,9427378,9428398,9429854,9431012,9433096,9433221,9433705,9433946,9435526,9435692,9435876,9437066,9437088,9437103,9437553,9438256,9438326,9438902,9439652,9440179,9440309&sparams=clen,dur,gir,id,initcwndbps,ip,ipbits,itag,keepalive,lmt,mime,mm,mn,ms,mv,nh,pl,requiressl,source,upn,expire&requiressl=yes&ipbits=0&itag=140&mm=31&ip=89.67.30.237&mn=sn-f5f7ln7y&mt=1466852949&mv=m&ms=au&pl=13&keepalive=yes&id=o-AHzsykHMS8p-STV4WNjL1IefVH_3QaxPSrG0PSBV7kL7&upn=FCU8wnQWjls&expire=1466874780&mime=audio/mp4&key=yt6&initcwndbps=2640000&signature=BD1476CD500CFD1B623E3166A2758C33B54D0249.0634456CBAA7DC29BB6A3BD5B9C01A11A1C7F927&ratebypass=yes";
+            var expectedTitle = "Despicable Me: Minion Rush - Field Sports - Update Trailer";
             var fixture = new YoutubePlaybackInfoProviderTestsFixture()
                 .ReturnHtmlForUrl(exampleVideoUrl, "example-video-page.html");
             
@@ -38,6 +38,9 @@ namespace Luma.SmartHub.Plugins.Youtube.Tests
 
         private class YoutubePlaybackInfoProviderTestsFixture
         {
+            private string _url;
+            private string _htmlPath;
+
             public YoutubePlaybackInfoProvider Sut { get; }
 
             public Mock<IWebClient> WebClient { get; }
@@ -50,9 +53,23 @@ namespace Luma.SmartHub.Plugins.Youtube.Tests
 
             public YoutubePlaybackInfoProviderTestsFixture ReturnHtmlForUrl(string url, string htmlPath)
             {
+                _url = url;
+                _htmlPath = htmlPath;
+
                 var html = File.ReadAllText(htmlPath);
 
                 WebClient.Setup(c => c.DownloadString(url)).Returns(html);
+
+                return this;
+            }
+
+            public YoutubePlaybackInfoProviderTestsFixture Update()
+            {
+                var webClient = new WebClient();
+
+                var html = webClient.DownloadString(_url);
+
+                File.WriteAllText(_htmlPath, html);
 
                 return this;
             }

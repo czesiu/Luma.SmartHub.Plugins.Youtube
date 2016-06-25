@@ -12,7 +12,7 @@ namespace Luma.SmartHub.Plugins.Youtube.Tests
         [Fact]
         public void Should_Create_Playlist_From_Watch_Url()
         {
-            var exampleVideoWithPlaylistUrl = "http://www.youtube.com/watch?v=BVfZ6GSee3E&list=PLzjFbaFzsmMQk8613XlrMO20m0FPs5Z1d&index=1";
+            var exampleVideoWithPlaylistUrl = "http://www.youtube.com/watch?v=maw2OoL15J4&list=PLzjFbaFzsmMQk8613XlrMO20m0FPs5Z1d&index=64";
             var expectedResultsCount = 200;
             var fixture = new YoutubePlaylistProviderTestsFixture()
                 .ReturnHtmlForUrl(exampleVideoWithPlaylistUrl, "example-video-page-with-playlist.html");
@@ -37,6 +37,9 @@ namespace Luma.SmartHub.Plugins.Youtube.Tests
 
         private class YoutubePlaylistProviderTestsFixture
         {
+            private string _url;
+            private string _htmlPath;
+
             public YoutubePlaylistProvider Sut { get; }
 
             public Mock<IWebClient> WebClient { get; }
@@ -49,9 +52,23 @@ namespace Luma.SmartHub.Plugins.Youtube.Tests
 
             public YoutubePlaylistProviderTestsFixture ReturnHtmlForUrl(string url, string htmlPath)
             {
+                _url = url;
+                _htmlPath = htmlPath;
+
                 var html = File.ReadAllText(htmlPath);
 
                 WebClient.Setup(c => c.DownloadString(url)).Returns(html);
+
+                return this;
+            }
+
+            public YoutubePlaylistProviderTestsFixture Update()
+            {
+                var webClient = new WebClient();
+
+                var html = webClient.DownloadString(_url);
+
+                File.WriteAllText(_htmlPath, html);
 
                 return this;
             }
